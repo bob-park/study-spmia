@@ -132,6 +132,13 @@ public class LicenseService {
    *        - 1차 fallback 의 동일한 장애가 2차 fallback 옵션에도 영향을 줄 수 있다.
    * </pre>
    *
+   * ! 주의
+   *
+   * <pre>
+   *     - 이 예시는 study 를 위해 하드 코딩한 것
+   *     - 원래라면, Spring Cloud Config Server 에 저장하여, recompile 이나 redeploy 없이 instance 만 재시작하면 되게 해야한다.
+   * </pre>
+   *
    * @param organizationId
    * @return
    */
@@ -153,6 +160,19 @@ public class LicenseService {
         // ! Thread Poll 개수는 다음과 같은 공식으로 제안된다.
         // (service 가 정상일때 최고점에서 초당 요청수 * 99 백분위 수 지연시간(단위: 초)) + overhead 를 대비한 소량의 추가 thread
         @HystrixProperty(name = "maxQueueSize", value = "10") // request queue 수
+      },
+      commandProperties = {
+        // Hystrix 가 호출 차단 고려 시간대 동안 연속 호출 횟수 제어
+        @HystrixProperty(name = "circuitBreaker.requestVolumeThreshold", value = "10"),
+        // 회초 차단기를 차단하고 나서 requestVolumeThreshold 만큼 호출 한 후 timeout or throw exception 시 http 500 반환
+        // 등으로 실패해야 하는 호출 비율
+        @HystrixProperty(name = "circuitBreaker.errorThresholdPercentage", value = "75"),
+        // 차단되고 나서 hystrix 가 서비스의 회복 상태를 확인할때까지 대기 시간 간격
+        @HystrixProperty(name = "circuitBreaker.sleepWindowInMilliseconds", value = "7000"),
+        // 회로 차단기 동작 제어 - Hystrix 가 서비스 호출 문제를 모니터할 시간 간격  default : 10s
+        @HystrixProperty(name = "metrics.rollingStats.timeInMilliseconds", value = "15000"),
+        // 회로 차단기 동작 제어 - metrics.rollingStats.timeInMilliseconds 값 동안 통계를 수집할 횟수
+        @HystrixProperty(name = "metrics.rollingStats.numBuckets", value = "5")
       })
   public List<License> getLicenseByOrg(String organizationId) {
     //    log.debug("Correlation id : {}", UserContextHolder.getContext().getCorrelationId());
