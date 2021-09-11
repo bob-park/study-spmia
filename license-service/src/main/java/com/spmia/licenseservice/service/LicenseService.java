@@ -14,6 +14,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 import java.util.UUID;
@@ -112,18 +113,61 @@ public class LicenseService {
     }
   }
 
+  /**
+   * hystrix fallback pattern
+   *
+   * <p>* 구현 시 해야할 일
+   *
+   * <pre>
+   *     1. @HystrixCommand 에  fallbackMethod 지정
+   *     2. fallbackMethod 정의
+   * </pre>
+   *
+   * ! 주의해야할 점
+   *
+   * <pre>
+   *     1. timeout exception 을 잡아내고, error logging 만 한다면 service call 후 try~catch 사용하여 logging block을 넣어도 된다.
+   *     2. fallback 기능으로 수행하는 행동을 알고 있어야 한다.
+   *        - fallback service 에서 다른 분산 서비스를 호출한다면 @HystrixCommand 로 fallback 을 감싸야 할 수 있다.
+   *        - 1차 fallback 의 동일한 장애가 2차 fallback 옵션에도 영향을 줄 수 있다.
+   * </pre>
+   *
+   * @param organizationId
+   * @return
+   */
   @HystrixCommand(
       // hystrix 를 사용자 정의하기 위해 추가한 매개변수를 전달하는 commandProperties
-      commandProperties = {
-        @HystrixProperty(
-            name = "execution.isolation.thread.timeoutInMilliseconds",
-            value = "12000") // 회로 차단기의 timeout 설정
-      })
+      //      commandProperties = {
+      //        @HystrixProperty(
+      //            name = "execution.isolation.thread.timeoutInMilliseconds",
+      //            value = "12000") // 회로 차단기의 timeout 설정
+      //      }
+      fallbackMethod = "buildFallbackLicenseList")
   public List<License> getLicenseByOrg(String organizationId) {
     //    log.debug("Correlation id : {}", UserContextHolder.getContext().getCorrelationId());
 
     randomlyRunLog();
 
     return licenseRepository.findByOrganizationId(organizationId);
+  }
+
+  /**
+   * fallback method
+   *
+   * @param organizationId
+   * @return
+   */
+  private List<License> buildFallbackLicenseList(String organizationId) {
+    List<License> fallbackList = new ArrayList<>();
+
+    License license =
+        new License()
+            .withId("000000-00-00000")
+            .withOrganizationId(organizationId)
+            .withProductName("Sorry no licensing information currently available");
+
+    fallbackList.add(license);
+
+    return fallbackList;
   }
 }
