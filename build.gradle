@@ -18,6 +18,7 @@ allprojects {
     ext {
         springCloudVersion = '3.0.3'
         springCloudNetflixVersion = '3.0.3'
+        springCloudNetflixHystrixVersion = '2.2.9.RELEASE'
     }
 }
 
