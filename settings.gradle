@@ -1,0 +1,12 @@
+pluginManagement {
+    repositories {
+        gradlePluginPortal()
+    }
+}
+
+rootProject.name = 'spmia'
+
+include 'eureka-server'
+include 'config-server'
+include 'license-service'
+include 'organization-service'

@@ -1,0 +1,30 @@
+example.property: "I am in the Default1"
+example.product-name: "test1"
+
+spring:
+  datasource:
+#    platform: postgres
+    driver-class-name: org.postgresql.Driver
+    url: jdbc:postgresql://localhost:15432/msa_db
+    username: msa
+    password: "{cipher}f17244820d7d3217e2bb2af2883caf02cc19eb017972eced185b812bb832f9e6" # 암호화로 저장하지만, 평문으로 출력된다.
+#    test-while-idle: true
+#    validation-query: select 1
+  jpa:
+    hibernate:
+      ddl-auto: create
+    database: POSTGRESQL
+    show-sql: true
+    properties:
+      hibernate:
+        dialect: org.hibernate.dialect.PostgreSQLDialect
+        format_sql: true
+        use_sql_comments: true # 주석으로 jpql 이 출력된다.
+# logging
+logging:
+  level:
+    org.hibernate.SQL: debug
+#    org.hibernate.type: trace
+
+
+

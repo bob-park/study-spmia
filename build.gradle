@@ -1,0 +1,45 @@
+buildscript {
+    ext {
+        springBootVersion = '2.5.4'
+        dependencyManagementVersion = '1.0.11.RELEASE'
+    }
+    repositories {
+        mavenCentral()
+    }
+    dependencies {
+        dependencies {
+            classpath "org.springframework.boot:spring-boot-gradle-plugin:${springBootVersion}"
+            classpath "io.spring.gradle:dependency-management-plugin:${dependencyManagementVersion}"
+        }
+    }
+}
+
+allprojects {
+    ext {
+        springCloudVersion = '3.0.3'
+        springCloudNetflixVersion = '3.0.3'
+    }
+}
+
+subprojects {
+    apply plugin: 'java'
+    apply plugin: 'org.springframework.boot'
+    apply plugin: 'io.spring.dependency-management'
+
+    sourceCompatibility = 11
+
+    repositories {
+        mavenCentral()
+    }
+
+
+
+    dependencies {
+        implementation 'org.springframework.boot:spring-boot-starter-web'
+        developmentOnly 'org.springframework.boot:spring-boot-devtools'
+        annotationProcessor 'org.springframework.boot:spring-boot-configuration-processor'
+        implementation 'org.springframework.boot:spring-boot-starter-test'
+    }
+
+
+}

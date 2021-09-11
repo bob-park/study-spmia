@@ -1,0 +1,6 @@
+dependencies {
+    implementation "org.springframework.cloud:spring-cloud-starter-config:${springCloudVersion}"
+    implementation "org.springframework.cloud:spring-cloud-config-server:${springCloudVersion}"
+    implementation "org.springframework.cloud:spring-cloud-starter-netflix-eureka-client:${springCloudNetflixVersion}"
+}
+

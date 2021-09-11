@@ -1,0 +1,11 @@
+# server
+server:
+  port: 8761 # 독립 실행 모드로 설정 시 port
+
+eureka:
+  client:
+    register-with-eureka: false # eureka service 에 자신을 등록하지 않는다
+    fetch-registry: false # registry 정보를 local 에 cash 하지 않는다.
+  server:
+    wait-time-in-ms-when-sync-empty: 5 # server 가 request 받기 전 대기할 초기 시간
+

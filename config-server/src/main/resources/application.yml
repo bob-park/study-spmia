@@ -1,0 +1,32 @@
+# Server
+server:
+  port: 8888
+
+# Spring
+spring:
+  application:
+    name: configserver
+  profiles:
+    active: native # 구성 정보를 저장할 back-end 저장소 (파일 시스템)
+  cloud:
+    config:
+      server:
+        native:
+          search-locations:
+            - file:///Users/hwpark/Documents/study/spmia-workspace/spmia/config-server/src/main/resources/config/licensingservice
+        encrypt:
+          enabled: false # spring cloud config client 에게 복호화 하도록 하기 위한 설정
+
+
+encrypt:
+  key: IMSYMMETRIC # 대칭키 - 여기다가 정의할 경우 대칭키가 repository 에 업로드되므로 시스템 환경변수로 지정해야한다.
+
+# eureka
+eureka:
+  instance:
+    prefer-ip-address: true # service 이름(hostname) 대신 service ip address 등록
+  client:
+    register-with-eureka: true # eureka 에 service 등록
+    fetch-registry: true # eureka service location
+    service-url:
+      defaultZone: http://localhost:8761/eureka/ # registry 사본을 local 로 가져오기
