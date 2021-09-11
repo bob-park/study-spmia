@@ -5,6 +5,8 @@ import com.spmia.licenseservice.service.LicenseService;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 @RestController
 @RequestMapping(value = "v1/organizations/{organizationId}/licenses")
 public class LicenseServiceController {
@@ -12,6 +14,11 @@ public class LicenseServiceController {
 
   public LicenseServiceController(LicenseService licenseService) {
     this.licenseService = licenseService;
+  }
+
+  @GetMapping
+  public List<License> getLicenses(@PathVariable String organizationId) {
+    return licenseService.getLicenseByOrg(organizationId);
   }
 
   @GetMapping(path = "/{licenseId}")
