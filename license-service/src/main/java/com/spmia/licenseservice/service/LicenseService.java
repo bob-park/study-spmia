@@ -142,7 +142,18 @@ public class LicenseService {
       //            name = "execution.isolation.thread.timeoutInMilliseconds",
       //            value = "12000") // 회로 차단기의 timeout 설정
       //      }
-      fallbackMethod = "buildFallbackLicenseList")
+      fallbackMethod = "buildFallbackLicenseList",
+      threadPoolKey = "licenseByOrgThreadPool", // thread pool 의 고유 이름
+      // thread pool 동작 정의 - 없는 경우 default 로 생성됨
+      threadPoolProperties = {
+        @HystrixProperty(name = "coreSize", value = "30"), // thread 개수
+        // value 에 따른 동작
+        // -1 :  SynchronousQueue 사용됨 - thread poll 에서 가용 thread 개수보다 더 많은 요청을 처리할 수 없다.
+        // > 1 : LinkedBlockQueue 사용됨 - 모든 thread 가 요청을 처리하고 있어도, 더 많은 요청을 queue 에 넣을 수 있다.
+        // ! Thread Poll 개수는 다음과 같은 공식으로 제안된다.
+        // (service 가 정상일때 최고점에서 초당 요청수 * 99 백분위 수 지연시간(단위: 초)) + overhead 를 대비한 소량의 추가 thread
+        @HystrixProperty(name = "maxQueueSize", value = "10") // request queue 수
+      })
   public List<License> getLicenseByOrg(String organizationId) {
     //    log.debug("Correlation id : {}", UserContextHolder.getContext().getCorrelationId());
 
