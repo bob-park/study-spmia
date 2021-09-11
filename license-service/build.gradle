@@ -6,13 +6,15 @@ dependencies {
 
     implementation('com.github.gavlyukovskiy:p6spy-spring-boot-starter:1.7.1') // 성능 상 문제가 될 수 있기 때문에, 실 배포 시 테스트 해보고 할것
 
-    // spring cloud config
-    implementation 'org.springframework.cloud:spring-cloud-config-client:3.0.4'
+
 
     // spring security
     implementation 'org.springframework.security:spring-security-rsa:1.0.10.RELEASE'
 
+    // spring cloud config
+    implementation 'org.springframework.cloud:spring-cloud-config-client:3.0.4'
     implementation "org.springframework.cloud:spring-cloud-starter-netflix-eureka-client:${springCloudNetflixVersion}"
-
     implementation "org.springframework.cloud:spring-cloud-starter-openfeign:${springCloudVersion}"
+    implementation "org.springframework.cloud:spring-cloud-starter-netflix-hystrix:${springCloudNetflixHystrixVersion}"
+
 }
