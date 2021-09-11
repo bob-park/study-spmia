@@ -8,6 +8,7 @@ import com.spmia.licenseservice.common.discovery.clients.OrganizationRestTemplat
 import com.spmia.licenseservice.common.model.License;
 import com.spmia.licenseservice.common.model.Organization;
 import com.spmia.licenseservice.common.model.ServiceConfig;
+import com.spmia.licenseservice.common.uilts.UserContextHolder;
 import com.spmia.licenseservice.repository.LicenseRepository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -175,7 +176,8 @@ public class LicenseService {
         @HystrixProperty(name = "metrics.rollingStats.numBuckets", value = "5")
       })
   public List<License> getLicenseByOrg(String organizationId) {
-    //    log.debug("Correlation id : {}", UserContextHolder.getContext().getCorrelationId());
+    // ! 기본적으로 Hystrix 는 부모 thread 의 context 를 Hystrix 명령이 관리하는 thread 로 전파시키지 않는다.
+    log.debug("Correlation id : {}", UserContextHolder.getContext().getCorrelationId());
 
     randomlyRunLog();
 

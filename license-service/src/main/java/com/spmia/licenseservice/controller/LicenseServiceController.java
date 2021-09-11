@@ -1,7 +1,10 @@
 package com.spmia.licenseservice.controller;
 
 import com.spmia.licenseservice.common.model.License;
+import com.spmia.licenseservice.common.uilts.UserContextHolder;
 import com.spmia.licenseservice.service.LicenseService;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
@@ -10,6 +13,9 @@ import java.util.List;
 @RestController
 @RequestMapping(value = "v1/organizations/{organizationId}/licenses")
 public class LicenseServiceController {
+
+  private final Logger log = LoggerFactory.getLogger(getClass());
+
   private final LicenseService licenseService;
 
   public LicenseServiceController(LicenseService licenseService) {
@@ -18,6 +24,7 @@ public class LicenseServiceController {
 
   @GetMapping
   public List<License> getLicenses(@PathVariable String organizationId) {
+    log.debug("Correlation id : {}", UserContextHolder.getContext().getCorrelationId());
     return licenseService.getLicenseByOrg(organizationId);
   }
 
