@@ -2,6 +2,7 @@
 server:
   port: 5555
 
+#Enable disk space health check.
 management:
   endpoint:
     health:
@@ -11,15 +12,13 @@ management:
       exposure:
         include: "*"
 
+
 # spring
 spring:
   application:
     name: zuulservice # Spring Cloud Config Client 가 어떤 서비스를 조회할 지 알수 있도록 지정
   profiles:
     active: default # Service 가 실행할 기본 프로파일 지정
-  config:
-    import: configserver:http://localhost:8888 # Spring Cloud Config 서버 위치 지정
-
   cloud:
     gateway:
       discovery:
@@ -29,15 +28,15 @@ spring:
         - id: licensingservice
           uri: lb://licensingservice
           predicates:
-            - Path=/licensing/**
+            - Path=/api/licensing/**
           filters:
-            - RewritePath=/licensing/(?<path>.*),/$\{path}
+            - RewritePath=/api/licensing/(?<path>.*),/$\{path}
         - id: organizationservice
           uri: lb://organizationservice
           predicates:
-            - Path=/organization/**
+            - Path=/api/organization/**
           filters:
-            - RewritePath=/organization/(?<path>.*),/$\{path}
+            - RewritePath=/api/organization/(?<path>.*),/$\{path}
         - id: zuulservice
           uri: lb://zuulservice
           predicates:
@@ -47,19 +46,9 @@ spring:
         - id: configserver
           uri: lb://configserver
           predicates:
-            - Path=/configserver/**
+            - Path=/api/configserver/**
           filters:
-            - RewritePath=/configserver/(?<path>.*),/$\{path}
+            - RewritePath=/api/configserver/(?<path>.*),/$\{path}
 
 encrypt:
   key: IMSYMMETRIC # study 하는것이므로 대칭키를 일단 환경 설정 파일에 정의
-
-# eureka
-eureka:
-  instance:
-    prefer-ip-address: true # service 이름(hostname) 대신 service ip address 등록
-  client:
-    register-with-eureka: true # eureka 에 service 등록
-    fetch-registry: true # eureka service location
-    service-url:
-      defaultZone: http://localhost:8761/eureka/ # registry 사본을 local 로 가져오기

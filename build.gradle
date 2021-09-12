@@ -1,6 +1,6 @@
 buildscript {
     ext {
-        springBootVersion = '2.4.10'
+        springBootVersion = '2.5.4'
         dependencyManagementVersion = '1.0.11.RELEASE'
     }
     repositories {
@@ -16,7 +16,8 @@ buildscript {
 
 allprojects {
     ext {
-        springBootCloudVersion = '3.0.3'
+        springCloudConfigVersion = '3.0.3'
+        springCloudGatewayVersion = '3.0.3'
         springCloudNetflixVersion = '3.0.3'
         springCloudNetflixHystrixVersion = '2.2.9.RELEASE'
         springCloudNetflixZuulVersion = '2.2.9.RELEASE'

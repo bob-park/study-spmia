@@ -11,9 +11,9 @@ dependencies {
     implementation 'org.springframework.security:spring-security-rsa:1.0.10.RELEASE'
 
     // spring cloud config
-    implementation 'org.springframework.cloud:spring-cloud-config-client:3.0.4'
+    implementation "org.springframework.cloud:spring-cloud-config-client:${springCloudConfigVersion}"
     implementation "org.springframework.cloud:spring-cloud-starter-netflix-eureka-client:${springCloudNetflixVersion}"
-    implementation "org.springframework.cloud:spring-cloud-starter-openfeign:${springBootCloudVersion}"
+    implementation "org.springframework.cloud:spring-cloud-starter-openfeign:${springCloudNetflixVersion}"
     implementation "org.springframework.cloud:spring-cloud-starter-netflix-hystrix:${springCloudNetflixHystrixVersion}"
 
 
