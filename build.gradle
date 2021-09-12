@@ -1,6 +1,6 @@
 buildscript {
     ext {
-        springBootVersion = '2.5.4'
+        springBootVersion = '2.4.10'
         dependencyManagementVersion = '1.0.11.RELEASE'
     }
     repositories {
@@ -40,6 +40,8 @@ subprojects {
         developmentOnly 'org.springframework.boot:spring-boot-devtools'
         annotationProcessor 'org.springframework.boot:spring-boot-configuration-processor'
         implementation 'org.springframework.boot:spring-boot-starter-test'
+
+        implementation 'org.springframework.boot:spring-boot-starter-actuator'
     }
 
 
