@@ -1,6 +1,16 @@
 # server
 server:
-  port: 9000
+  port: 5555
+
+#Enable disk space health check.
+management:
+  endpoint:
+    health:
+      show-details: always
+  endpoints:
+    web:
+      exposure:
+        include: "*"
 
 # spring
 spring:
