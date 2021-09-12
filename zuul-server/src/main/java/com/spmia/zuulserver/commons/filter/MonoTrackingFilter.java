@@ -5,7 +5,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.cloud.gateway.filter.GatewayFilterChain;
 import org.springframework.cloud.gateway.filter.GlobalFilter;
-import org.springframework.cloud.gateway.support.ServerWebExchangeUtils;
 import org.springframework.core.Ordered;
 import org.springframework.stereotype.Component;
 import org.springframework.web.server.ServerWebExchange;
@@ -31,18 +30,6 @@ public class MonoTrackingFilter implements GlobalFilter, Ordered {
 
     log.debug("First Pre Global Filter");
 
-    // ? 상관관계 ID 로 지정하고 마이크로서비스에서 실행된 것을 추척하기 위해 request set header 를 하는 것 - 근데 안됨 - request header
-    // 는 read only 이다.
-    //    if (isCorrelationIdPresent()) {
-    //      log.debug("tmx-correlation-id found in tracking filter: {}",
-    // filterUtils.getCorrelationId());
-    //    } else {
-    //      filterUtils.setCorrelationId(generateCorrelationId());
-    //      log.debug(
-    //          "tmx-correlation-id generated in tracking filter: {}",
-    // filterUtils.getCorrelationId());
-    //    }
-
     String correlationId = null;
 
     if (isCorrelationIdPresent(exchange)) {
@@ -61,9 +48,10 @@ public class MonoTrackingFilter implements GlobalFilter, Ordered {
 
     log.debug("Processing incoming request for {}", exchange.getRequest().getURI());
 
-    return chain
-        .filter(exchange)
-        .then(Mono.fromRunnable(() -> log.info("Last Post Global Filter")));
+    // response 에 correlation_id 추가
+    exchange.getResponse().getHeaders().add(FilterUtils.CORRELATION_ID, correlationId);
+
+    return chain.filter(exchange);
   }
 
   @Override
