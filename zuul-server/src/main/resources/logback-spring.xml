@@ -27,6 +27,8 @@
     <logger name="org.springframework.web" level="error"/>
 
     <logger name="com.spmia" level="debug"/>
+<!--    <logger name="org.springframework.cloud.gateway" level="debug"/>-->
+<!--    <logger name="reactor.netty" level="debug"/>-->
 <!--    <logger name="com.netflix" level="debug"/>-->
 
     <root level="info">
