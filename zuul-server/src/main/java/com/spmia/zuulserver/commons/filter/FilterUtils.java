@@ -1,5 +1,7 @@
 package com.spmia.zuulserver.commons.filter;
 
+import org.springframework.cloud.gateway.route.Route;
+import org.springframework.cloud.gateway.support.ServerWebExchangeUtils;
 import org.springframework.http.server.reactive.ServerHttpRequest;
 import org.springframework.web.server.ServerWebExchange;
 
@@ -24,7 +26,8 @@ public class FilterUtils {
     return getRequestHeader(exchange, CORRELATION_ID);
   }
 
-  public static ServerHttpRequest setCorrelationId(ServerWebExchange exchange, String correlationId) {
+  public static ServerHttpRequest setCorrelationId(
+      ServerWebExchange exchange, String correlationId) {
     //    RequestContext ctx = RequestContext.getCurrentContext();
     //    ctx.addZuulRequestHeader(CORRELATION_ID, correlationId);
 
@@ -72,14 +75,12 @@ public class FilterUtils {
     return getRequestHeader(exchange, AUTH_TOKEN);
   }
 
-  //  public static String getServiceId(ServerWebExchange exchange) {
-  ////    RequestContext ctx = RequestContext.getCurrentContext();
-  ////
-  ////    // We might not have a service id if we are using a static, non-eureka route.
-  ////    if (ctx.get("serviceId") == null) return "";
-  ////    return ctx.get("serviceId").toString();
-  //
-  //  }
+  public static String getServiceId(ServerWebExchange exchange) {
+
+    Route route = exchange.getAttribute(ServerWebExchangeUtils.GATEWAY_ROUTE_ATTR);
+
+    return route != null ? route.getId() : null;
+  }
 
   private static String getRequestHeader(ServerWebExchange exchange, String headerName) {
 

@@ -5,6 +5,8 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.cloud.gateway.filter.GatewayFilterChain;
 import org.springframework.cloud.gateway.filter.GlobalFilter;
+import org.springframework.cloud.gateway.route.Route;
+import org.springframework.cloud.gateway.support.ServerWebExchangeUtils;
 import org.springframework.core.Ordered;
 import org.springframework.stereotype.Component;
 import org.springframework.web.server.ServerWebExchange;
@@ -16,14 +18,6 @@ import java.util.UUID;
 public class MonoTrackingFilter implements GlobalFilter, Ordered {
 
   private final Logger log = LoggerFactory.getLogger(getClass());
-
-  private static final int FILTER_ORDER = -1;
-
-  //  private final FilterUtils filterUtils;
-  //
-  //  public MonoTrackingFilter(FilterUtils filterUtils) {
-  //    this.filterUtils = filterUtils;
-  //  }
 
   @Override
   public Mono<Void> filter(ServerWebExchange exchange, GatewayFilterChain chain) {
@@ -56,7 +50,7 @@ public class MonoTrackingFilter implements GlobalFilter, Ordered {
 
   @Override
   public int getOrder() {
-    return FILTER_ORDER;
+    return Ordered.LOWEST_PRECEDENCE;
   }
 
   private boolean isCorrelationIdPresent(ServerWebExchange exchange) {
