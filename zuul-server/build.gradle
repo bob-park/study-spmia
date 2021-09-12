@@ -1,5 +1,7 @@
 dependencies {
     implementation "org.springframework.cloud:spring-cloud-starter-netflix-eureka-client:${springCloudNetflixVersion}"
-    implementation 'org.springframework.cloud:spring-cloud-starter-netflix-zuul:2.2.9.RELEASE'
+    implementation "org.springframework.cloud:spring-cloud-config-client:${springCloudVersion}"
+    implementation "org.springframework.cloud:spring-cloud-starter-netflix-zuul:${springCloudNetflixZuulVersion}"
+
 }
 

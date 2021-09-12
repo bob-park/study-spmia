@@ -2,23 +2,17 @@
 server:
   port: 5555
 
-#Enable disk space health check.
-management:
-  endpoint:
-    health:
-      show-details: always
-  endpoints:
-    web:
-      exposure:
-        include: "*"
-
 # spring
 spring:
   application:
-    name: zuulserver # Eureka 에 등록할 service logical name
+    name: zuulserver # Spring Cloud Config Client 가 어떤 서비스를 조회할 지 알수 있도록 지정
   profiles:
-    active: default
+    active: default # Service 가 실행할 기본 프로파일 지정
+  config:
+    import: configserver:http://localhost:8888 # Spring Cloud Config 서버 위치 지정
 
+encrypt:
+  key: IMSYMMETRIC # study 하는것이므로 대칭키를 일단 환경 설정 파일에 정의
 
 # eureka
 eureka:
@@ -29,38 +23,3 @@ eureka:
     fetch-registry: true # eureka service location
     service-url:
       defaultZone: http://localhost:8761/eureka/ # registry 사본을 local 로 가져오기
-
-# zuul
-zuul:
-  ignored-services: '*' # eureka service id 기반의 모든 경로를 등록에서 제외한다.
-  prefix: /api # 접두어
-  routes:
-    origanizationservice: /organization/**
-    licensingservice: /licensing/**
-    configserver: /configserver/**
-
-## 수동 맵핑
-#  routes:
-#    organizationservice: /organization/**
-#  ignored-services: # 무시할 service list
-#    - organizationservice
-
-## 정적 URL 수동 맵핑 - 요청 경로가 하나밖에 설정하지 못한다. 즉, 부하 분산을 하지 못한다.
-#  routes:
-#    licensestatic: # service id - key name
-#      path: /licsensestatic/** # service 정적 경로
-#      url: http://lisenseservice-static:8081 # eureka 를 통하지 않고 zuul 이 직접 호출함
-## ribbon 지원을 끊고, 정적으로 부하 분산
-#  routes:
-#    licensestatic:
-#      path: /licsensestatic/**
-#      serviceId: lisensestatic # ribbon 에서 service 를 찾는데 사용할 service id 정의
-#ribbon:
-#  eureka:
-#    enabled: false # ribbon 에서 eureka 비활성화
-#
-#lisensestatic:
-#  ribbon:
-#    listOfServers:
-#      - http://licenseservice-static1:8081
-#      - http://licenseservice-static2:8082
