@@ -2,14 +2,54 @@
 server:
   port: 5555
 
+management:
+  endpoint:
+    health:
+      show-details: always
+  endpoints:
+    web:
+      exposure:
+        include: "*"
+
 # spring
 spring:
   application:
-    name: zuulserver # Spring Cloud Config Client 가 어떤 서비스를 조회할 지 알수 있도록 지정
+    name: zuulservice # Spring Cloud Config Client 가 어떤 서비스를 조회할 지 알수 있도록 지정
   profiles:
     active: default # Service 가 실행할 기본 프로파일 지정
   config:
     import: configserver:http://localhost:8888 # Spring Cloud Config 서버 위치 지정
+
+  cloud:
+    gateway:
+      discovery:
+        locator:
+          enabled: true
+      routes:
+        - id: licensingservice
+          uri: lb://licensingservice
+          predicates:
+            - Path=/licensing/**
+          filters:
+            - RewritePath=/licensing/(?<path>.*),/$\{path}
+        - id: organizationservice
+          uri: lb://organizationservice
+          predicates:
+            - Path=/organization/**
+          filters:
+            - RewritePath=/organization/(?<path>.*),/$\{path}
+        - id: zuulservice
+          uri: lb://zuulservice
+          predicates:
+            - Path=/zuulservice/**
+          filters:
+            - RewritePath=/zuulservice/(?<path>.*),/$\{path}
+        - id: configserver
+          uri: lb://configserver
+          predicates:
+            - Path=/configserver/**
+          filters:
+            - RewritePath=/configserver/(?<path>.*),/$\{path}
 
 encrypt:
   key: IMSYMMETRIC # study 하는것이므로 대칭키를 일단 환경 설정 파일에 정의

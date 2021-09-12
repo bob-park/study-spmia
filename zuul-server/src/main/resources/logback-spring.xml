@@ -27,6 +27,7 @@
     <logger name="org.springframework.web" level="error"/>
 
     <logger name="com.spmia" level="debug"/>
+    <logger name="com.netflix" level="debug"/>
 
     <root level="info">
         <appender-ref ref="console"/>
