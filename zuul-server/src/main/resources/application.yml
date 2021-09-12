@@ -36,9 +36,31 @@ zuul:
   prefix: /api # 접두어
   routes:
     origanizationservice: /organization/**
-    licensingservice: /lisensing/**
+    licensingservice: /licensing/**
+    configserver: /configserver/**
 
-#  routes: # 수동 맵핑
+## 수동 맵핑
+#  routes:
 #    organizationservice: /organization/**
 #  ignored-services: # 무시할 service list
 #    - organizationservice
+
+## 정적 URL 수동 맵핑 - 요청 경로가 하나밖에 설정하지 못한다. 즉, 부하 분산을 하지 못한다.
+#  routes:
+#    licensestatic: # service id - key name
+#      path: /licsensestatic/** # service 정적 경로
+#      url: http://lisenseservice-static:8081 # eureka 를 통하지 않고 zuul 이 직접 호출함
+## ribbon 지원을 끊고, 정적으로 부하 분산
+#  routes:
+#    licensestatic:
+#      path: /licsensestatic/**
+#      serviceId: lisensestatic # ribbon 에서 service 를 찾는데 사용할 service id 정의
+#ribbon:
+#  eureka:
+#    enabled: false # ribbon 에서 eureka 비활성화
+#
+#lisensestatic:
+#  ribbon:
+#    listOfServers:
+#      - http://licenseservice-static1:8081
+#      - http://licenseservice-static2:8082
