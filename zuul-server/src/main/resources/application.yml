@@ -1,0 +1,21 @@
+# server
+server:
+  port: 9000
+
+# spring
+spring:
+  application:
+    name: zuulserver # Eureka 에 등록할 service logical name
+  profiles:
+    active: default
+
+
+# eureka
+eureka:
+  instance:
+    prefer-ip-address: true # service 이름(hostname) 대신 service ip address 등록
+  client:
+    register-with-eureka: true # eureka 에 service 등록
+    fetch-registry: true # eureka service location
+    service-url:
+      defaultZone: http://localhost:8761/eureka/ # registry 사본을 local 로 가져오기
