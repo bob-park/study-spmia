@@ -1,7 +1,11 @@
+# server
+server:
+  port: 9101
+
 # spring
 spring:
   application:
-    name: specialroutesservice
+    name: specialrouteservice
   profiles:
     active: default
   config:

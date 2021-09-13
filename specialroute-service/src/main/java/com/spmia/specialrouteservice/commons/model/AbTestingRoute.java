@@ -1,9 +1,25 @@
-package com.spmia.zuulserver.commons.model;
+package com.spmia.specialrouteservice.commons.model;
 
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.Id;
+import javax.persistence.Table;
+
+@Entity
+@Table(name = "abtesting")
 public class AbTestingRoute {
+
+  @Id
+  @Column(name = "service_name", nullable = false)
   String serviceName;
+
+  @Column(name = "active", nullable = false)
   String active;
+
+  @Column(name = "endpoint", nullable = false)
   String endpoint;
+
+  @Column(name = "weight", nullable = false)
   Integer weight;
 
   public String getActive() {
@@ -36,22 +52,5 @@ public class AbTestingRoute {
 
   public void setWeight(Integer weight) {
     this.weight = weight;
-  }
-
-  @Override
-  public String toString() {
-    return "AbTestingRoute{"
-        + "serviceName='"
-        + serviceName
-        + '\''
-        + ", active='"
-        + active
-        + '\''
-        + ", endpoint='"
-        + endpoint
-        + '\''
-        + ", weight="
-        + weight
-        + '}';
   }
 }
