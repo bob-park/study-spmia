@@ -1,9 +1,9 @@
 dependencies {
     implementation 'org.springframework.boot:spring-boot-starter-web'
-    implementation "org.springframework.cloud:spring-cloud-config-client:${springCloudConfigVersion}"
     implementation "org.springframework.cloud:spring-cloud-starter-netflix-hystrix:${springCloudNetflixHystrixVersion}"
     implementation "org.springframework.cloud:spring-cloud-starter-netflix-eureka-client:${springCloudNetflixVersion}"
     implementation "org.springframework.cloud:spring-cloud-starter-config:${springCloudConfigVersion}"
+    implementation "org.springframework.cloud:spring-cloud-config-client:${springCloudConfigVersion}"
     implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
     implementation group: 'org.postgresql', name: 'postgresql', version: '42.2.23'
     implementation group: 'com.h2database', name: 'h2', version: '1.4.200'

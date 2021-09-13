@@ -21,6 +21,7 @@ spring:
   config:
     import: configserver:http://localhost:8888 # Spring Cloud Config 서버 위치 지정
 
+
 encrypt:
   key: IMSYMMETRIC # study 하는것이므로 대칭키를 일단 환경 설정 파일에 정의
 
