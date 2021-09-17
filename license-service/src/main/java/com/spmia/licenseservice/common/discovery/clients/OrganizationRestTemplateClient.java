@@ -20,7 +20,7 @@ public class OrganizationRestTemplateClient {
     // pattern : http://{applicationId}/...
     ResponseEntity<Organization> exchange =
         restTemplate.exchange(
-            "http://organizationservice/v1/organizations/{organizationId}",
+            "http://ORGANIZATIONSERVICE/v1/organizations/{organizationId}",
             HttpMethod.GET,
             null,
             Organization.class,

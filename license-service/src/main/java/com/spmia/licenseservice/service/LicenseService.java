@@ -2,7 +2,6 @@ package com.spmia.licenseservice.service;
 
 import com.netflix.hystrix.contrib.javanica.annotation.HystrixCommand;
 import com.netflix.hystrix.contrib.javanica.annotation.HystrixProperty;
-import com.spmia.licenseservice.common.discovery.clients.OrganizationDiscoveryClient;
 import com.spmia.licenseservice.common.discovery.clients.OrganizationFeignClient;
 import com.spmia.licenseservice.common.discovery.clients.OrganizationRestTemplateClient;
 import com.spmia.licenseservice.common.model.License;
@@ -28,7 +27,7 @@ public class LicenseService {
 
   private final LicenseRepository licenseRepository;
 
-  private final OrganizationDiscoveryClient discoveryClient;
+//  private final OrganizationDiscoveryClient discoveryClient;
   private final OrganizationRestTemplateClient restTemplateClient;
   private final OrganizationFeignClient feignClient;
 
@@ -36,13 +35,13 @@ public class LicenseService {
 
   public LicenseService(
       LicenseRepository licenseRepository,
-      OrganizationDiscoveryClient discoveryClient,
+//      OrganizationDiscoveryClient discoveryClient,
       OrganizationRestTemplateClient restTemplateClient,
       OrganizationFeignClient feignClient,
       ServiceConfig config) {
 
     this.licenseRepository = licenseRepository;
-    this.discoveryClient = discoveryClient;
+//    this.discoveryClient = discoveryClient;
     this.restTemplateClient = restTemplateClient;
     this.feignClient = feignClient;
     this.config = config;
@@ -86,8 +85,8 @@ public class LicenseService {
 
   private Organization retrieveOrgInfo(String organizationId, String clientType) {
     //    return discoveryClient.getOrganization(organizationId);
-    //    return restTemplateClient.getOrganization(organizationId);
-    return feignClient.getOrganization(organizationId);
+        return restTemplateClient.getOrganization(organizationId);
+//    return feignClient.getOrganization(organizationId);
   }
 
   @HystrixCommand

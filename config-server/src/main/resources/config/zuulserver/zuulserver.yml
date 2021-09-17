@@ -1,0 +1,28 @@
+# zuul
+#zuul:
+#  ignored-services: '*' # eureka service id 기반의 모든 경로를 등록에서 제외한다.
+#  prefix: /api # 접두어
+#  routes:
+#    origanizationservice: /organization/**
+#    licensingservice: /licensing/**
+#    configserver: /configserver/**
+#
+## zuul timeout
+#hystrix:
+#  command:
+#    default: # default 는 모든 서비스에 적용됨 - 특정 서비스에만 적용할 경우 service id 를 넣으면 됨
+#      execution:
+#        isolation:
+#          thread:
+#            timeoutInMiliseconds: 3000 # 단위 ms
+
+
+# eureka
+eureka:
+  instance:
+    prefer-ip-address: true # service 이름(hostname) 대신 service ip address 등록
+  client:
+    register-with-eureka: true # eureka 에 service 등록
+    fetch-registry: true # eureka service location
+    service-url:
+      defaultZone: http://localhost:8761/eureka/ # registry 사본을 local 로 가져오기

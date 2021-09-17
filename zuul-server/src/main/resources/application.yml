@@ -1,0 +1,59 @@
+# server
+server:
+  port: 5555
+
+#Enable disk space health check.
+management:
+  endpoint:
+    health:
+      show-details: always
+  endpoints:
+    web:
+      exposure:
+        include: "*"
+
+
+# spring
+spring:
+  application:
+    name: zuulservice # Spring Cloud Config Client 가 어떤 서비스를 조회할 지 알수 있도록 지정
+  profiles:
+    active: default # Service 가 실행할 기본 프로파일 지정
+  cloud:
+    gateway:
+#      httpserver:
+#        wiretap: true
+#      httpclient:
+#        wiretap: true
+#      discovery:
+#        locator:
+#          enabled: true
+      routes:
+        - id: licensingservice
+          uri: lb://licensingservice
+          predicates:
+            - Path=/api/licensing/**
+          filters:
+            - RewritePath=/api/licensing/(?<path>.*),/$\{path}
+        - id: organizationservice
+          uri: lb://organizationservice
+          predicates:
+            - Path=/api/organization/**
+          filters:
+            - RewritePath=/api/organization/(?<path>.*),/$\{path}
+        - id: zuulservice
+          uri: lb://zuulservice
+          predicates:
+            - Path=/zuulservice/**
+          filters:
+            - RewritePath=/zuulservice/(?<path>.*),/$\{path}
+        - id: configserver
+          uri: lb://configserver
+          predicates:
+            - Path=/api/configserver/**
+          filters:
+            - RewritePath=/api/configserver/(?<path>.*),/$\{path}
+
+
+encrypt:
+  key: IMSYMMETRIC # study 하는것이므로 대칭키를 일단 환경 설정 파일에 정의

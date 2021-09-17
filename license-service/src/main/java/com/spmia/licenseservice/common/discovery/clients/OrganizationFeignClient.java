@@ -6,11 +6,11 @@ import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 
-@FeignClient(name = "organizationservice")
+@FeignClient(name = "zuulservice")
 public interface OrganizationFeignClient {
 
   @GetMapping(
-      path = "v1/organizations/{organizationId}",
+      path = "/api/organization/v1/organizations/{organizationId}",
       consumes = MediaType.APPLICATION_JSON_VALUE) // end-point 와 action 정의
   Organization getOrganization(@PathVariable String organizationId);
 }
